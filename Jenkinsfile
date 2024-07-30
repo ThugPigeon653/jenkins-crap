@@ -1,13 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20.16.0-alpine3.20'
-        }
-    }
+    agent { label 'dev' }
     stages {
-        stage('Test') {
+        stage('Checkout') {
             steps {
-                sh 'node --version'
+                checkout scm
+            }
+        }
+        stage('Build'){
+            steps {
+                script {
+                    sh 'docker build -t dockerimage .'
+                }
             }
         }
     }
