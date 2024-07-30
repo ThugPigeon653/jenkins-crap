@@ -1,9 +1,24 @@
 pipeline {
-    agent { dockerfile true }
+    agent any
+    
     stages {
-        stage ('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh 'hostname'
+                script {
+                    // Build Docker image from Dockerfile
+                    def customImage = docker.build('your-image-name:latest')
+                }
+            }
+        }
+        
+        stage('Run Container') {
+            steps {
+                script {
+                    // Run commands inside the container
+                    docker.image('your-image-name:latest').inside {
+                        sh 'hostname'
+                    }
+                }
             }
         }
     }
